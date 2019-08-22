@@ -9,9 +9,11 @@ pipeline {
     	}
     	stage('Sonar Analysis'){
     		steps {
-    			bat"mvn sonar:sonar \
-  				-Dsonar.host.url=http://localhost:9000 \
-  				-Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
+          withSonarQubeEnv('SonarQube') { 
+    			  bat"mvn sonar:sonar \
+  				  -Dsonar.host.url=http://localhost:9000 \
+  				  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
+          }
     		}
     	}
     	stage("Quality Gate") {
