@@ -14,10 +14,17 @@ pipeline {
   				-Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
     		}
     	}
-        stage('Build') {
-            steps {
-               bat "mvn clean install"
-            }
+    	stage("Quality Gate") {
+        steps {
+          timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: true
+          }
         }
+      }
+      stage('Build') {
+        steps {
+          bat "mvn clean install"
+        }
+      }
     }
 }
