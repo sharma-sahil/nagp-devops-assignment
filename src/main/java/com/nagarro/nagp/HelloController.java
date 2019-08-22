@@ -19,4 +19,5 @@ public class HelloController {
 		model.put("user", "Sahil Sharma");
 		return "index";
 	}
+
 }
