@@ -3,7 +3,7 @@ pipeline {
     stages {
     	stage('Checkout'){
     		steps {
-    			git credentialsId: '3b07e190-29a4-4a0f-bee5-bcaa05992cf4', 
+    			git credentialsId: '34ed3503-6786-4e1f-97e6-d275a8699c06', 
     			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
     		}
     	}
