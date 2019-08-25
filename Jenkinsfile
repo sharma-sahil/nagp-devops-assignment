@@ -35,14 +35,15 @@ pipeline {
         steps {
           script{
             def server = Artifactory.server 'artifactoryServer'
-            def buildInfo = Artifactory.newBuildInfo()
-            buildInfo.env.capture = true
-            buildInfo.env.collect()
+            // def buildInfo = Artifactory.newBuildInfo()
+            // buildInfo.env.capture = true
+            // buildInfo.env.collect()
             def rtMaven = Artifactory.newMavenBuild()
             rtMaven.tool = 'M3'
             rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
-            rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-            server.publishBuildInfo buildInfo
+            rtMaven.run pom: 'pom.xml', goals: 'clean install'
+            // , buildInfo: buildInfo
+            // server.publishBuildInfo buildInfo
           }
         }
       }
