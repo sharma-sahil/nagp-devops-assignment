@@ -6,12 +6,15 @@ node {
   stages{
     stage('Checkout') {
       steps{
-          git poll:true, credentialsId: '34ed3503-6786-4e1f-97e6-d275a8699c06', 
-          url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
+        script{
+            git poll:true, credentialsId: '34ed3503-6786-4e1f-97e6-d275a8699c06', 
+            url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
         }
       }
-      stage('Sonar Analysis'){
-        steps {
+    }
+    stage('Sonar Analysis'){
+      steps {
+        script{
           withSonarQubeEnv('SonarQube Server') { 
             sh "mvn clean package sonar:sonar \
               -Dsonar.host.url=http://localhost:9000 \
@@ -19,21 +22,26 @@ node {
           }
         }
       }
-      stage("Quality Gate") {
-        steps {
+    }
+    stage("Quality Gate") {
+      steps {
+          script{
           timeout(time: 1, unit: 'HOURS') {
             waitForQualityGate abortPipeline: true
           }
         }
       }
-      stage('Build') {
-        steps {
+    }
+    stage('Build') {
+      steps {
+        script{
           bat "mvn clean install"
         }
       }
-      stage('Push to artifactory') {
-        steps {
-          script{
+    }
+    stage('Push to artifactory') {
+      steps {
+        script{
             def server = Artifactory.server 'artifactoryServer'
             // def buildInfo = Artifactory.newBuildInfo()
             // buildInfo.env.capture = true
@@ -47,5 +55,5 @@ node {
           }
         }
       }
-  }     
-} 
+    }     
+  } 
