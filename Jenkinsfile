@@ -55,7 +55,7 @@ pipeline {
       }
       stage('Build docker image') {
         steps {
-          bat "docker build -t 'sharmasahil95/devops-test' ."
+          bat "docker build -t sharmasahil95/devops-test ."
           }
         }
     }
