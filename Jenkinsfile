@@ -1,9 +1,11 @@
 pipeline {
     agent any
+    // to setup the trigger for polling any change in github
     triggers {
       pollSCM('H/2 * * * *') 
     }          
     stages {
+      // checkout the latest code from the github
     	stage('Checkout'){
     		steps {
     			git poll:true, credentialsId: '34ed3503-6786-4e1f-97e6-d275a8699c06', 
@@ -11,6 +13,7 @@ pipeline {
     		}
     	}
     	stage('Sonar Analysis'){
+        // analyse the code in sonarqube
     		steps {
           withSonarQubeEnv('SonarQube Server') { 
     			  bat"mvn clean package sonar:sonar \
@@ -21,19 +24,17 @@ pipeline {
     	}
     	stage("Quality Gate") {
         steps {
+          // for this step to work need to setup a web hook in sonarqube
           timeout(time: 1, unit: 'HOURS') {
             waitForQualityGate abortPipeline: true
           }
         }
       }
-      stage('Build') {
-        steps {
-          bat "mvn clean install"
-        }
-      }
-      stage('Push to artifactory') {
+      stage('Build and Push to artifactory') {
         steps {
           script{
+            // while pushing to artifactory it runs mvn clean install
+            // so seaprate build step is not required
             def server = Artifactory.server 'artifactoryServer'
             def buildInfo = Artifactory.newBuildInfo()
             buildInfo.env.capture = true
@@ -43,24 +44,6 @@ pipeline {
             rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
             rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
             server.publishBuildInfo buildInfo
-
-            // def SERVER_ID = '4711' 
-            // def server = Artifactory.server SERVER_ID
-            // def uploadSpec = 
-            // """
-            // {
-            // "files": [
-            //     {
-            //         "pattern": "all/target/all-(*).war",
-            //         "target": "libs-snapshots-local/com/huettermann/web/{1}/"
-            //     }
-            //   ]
-            // }
-            // """
-            // def buildInfo = Artifactory.newBuildInfo() 
-            // buildInfo.env.capture = true 
-            // buildInfo=server.upload(uploadSpec) 
-            // server.publishBuildInfo(buildInfo)
           }
         }
       }
