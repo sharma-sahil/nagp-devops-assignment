@@ -16,7 +16,7 @@ pipeline {
         // analyse the code in sonarqube
     		steps {
           withSonarQubeEnv('SonarQube Server') { 
-    			  bat"mvn clean package sonar:sonar \
+    			  bat "mvn clean package sonar:sonar \
   				  -Dsonar.host.url=http://localhost:9000 \
   				  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
           }
@@ -24,7 +24,7 @@ pipeline {
     	}
     	stage("Quality Gate") {
         steps {
-          // for this step to work need to setup a web hook in sonarqube
+          // for this step to work, need to setup a web hook in sonarqube
           timeout(time: 1, unit: 'HOURS') {
             waitForQualityGate abortPipeline: true
           }
@@ -47,5 +47,10 @@ pipeline {
           }
         }
       }
+      stage('Build docker image') {
+        steps {
+          bat "docker build -t 'sharmasahil95/devops-test' ."
+          }
+        }
     }
 }
