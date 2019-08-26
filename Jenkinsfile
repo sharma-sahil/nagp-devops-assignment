@@ -12,16 +12,18 @@ pipeline {
     			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
     		}
     	}
+    	// analyse the code in sonarqube
     	stage('Sonar Analysis'){
-        // analyse the code in sonarqube
     		steps {
-          withSonarQubeEnv('SonarQube Server') { 
+    		// SonarQube Server -> Name of SonarQube configured in Jenkins configuration
+          		withSonarQubeEnv('SonarQube Server') { 
     			  bat "mvn clean package sonar:sonar \
   				  -Dsonar.host.url=http://localhost:9000 \
   				  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
-          }
+          		}
     		}
     	}
+    	// check if the quality gate passed or not
     	stage("Quality Gate") {
         steps {
           // for this step to work, need to setup a web hook in sonarqube
@@ -30,16 +32,20 @@ pipeline {
           }
         }
       }
+       // while pushing to artifactory it runs mvn clean install
+       // so seaprate build step is not required
       stage('Build and Push to artifactory') {
         steps {
           script{
-            // while pushing to artifactory it runs mvn clean install
-            // so seaprate build step is not required
+           	// artifactoryServer -> Artifactory Server ID configured in jenkins configuration
+           
             def server = Artifactory.server 'artifactoryServer'
             def buildInfo = Artifactory.newBuildInfo()
             buildInfo.env.capture = true
             buildInfo.env.collect()
             def rtMaven = Artifactory.newMavenBuild()
+            
+            // MavenTool -> name of maven installations under configure tools in jenkins
             rtMaven.tool = 'MavenTool'
             rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
             rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
