@@ -7,7 +7,7 @@
 <title>Welcome</title>
 </head>
 <body>
-	Sample Web Application created by - ${user}
 	<h1>Welcome Page</h1>
+	${text}
 </body>
 </html>

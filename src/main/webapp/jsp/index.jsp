@@ -7,7 +7,7 @@
 <title>Index</title>
 </head>
 <body>
-	Sample Web Application created by - ${user}
 	<h1>Index Page</h1>
+	Sample Web Application created by - ${user}
 </body>
 </html>

@@ -1,3 +1,7 @@
+// all of the below code is writted considering that the system on which pipeline is running is a windows machine 
+// if the pipeline has to be run on the linux server then some changes will be required.
+// e.g. -> bat will be replaced with sh and you may also need some changes in the docker file as well
+
 pipeline {
     agent any
     // to setup the trigger for polling any change in github
