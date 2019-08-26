@@ -37,10 +37,10 @@ pipeline {
             def server = Artifactory.server 'artifactoryServer'
             def buildInfo = Artifactory.newBuildInfo()
             buildInfo.env.capture = true
-            // def rtMaven = Artifactory.newMavenBuild()
-            // rtMaven.tool = 'M3'
-            // rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
-            // rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+            def rtMaven = Artifactory.newMavenBuild()
+            rtMaven.tool = 'MavenTool'
+            rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
+            rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
             server.publishBuildInfo buildInfo
 
             // def SERVER_ID = '4711' 
