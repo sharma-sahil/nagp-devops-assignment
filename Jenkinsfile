@@ -38,25 +38,25 @@ pipeline {
       // }
        // while pushing to artifactory it runs mvn clean install
        // so seaprate build step is not required
-      stage('Build and Push to artifactory') {
-        steps {
-          script{
-           	// artifactoryServer -> Artifactory Server ID configured in jenkins configuration
+      // stage('Build and Push to artifactory') {
+      //   steps {
+      //     script{
+      //      	// artifactoryServer -> Artifactory Server ID configured in jenkins configuration
            
-            def server = Artifactory.server 'artifactoryServer'
-            def buildInfo = Artifactory.newBuildInfo()
-            buildInfo.env.capture = true
-            buildInfo.env.collect()
-            def rtMaven = Artifactory.newMavenBuild()
+      //       def server = Artifactory.server 'artifactoryServer'
+      //       def buildInfo = Artifactory.newBuildInfo()
+      //       buildInfo.env.capture = true
+      //       buildInfo.env.collect()
+      //       def rtMaven = Artifactory.newMavenBuild()
             
-            // MavenTool -> name of maven installations under configure tools in jenkins
-            rtMaven.tool = 'MavenTool'
-            rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
-            rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-            server.publishBuildInfo buildInfo
-          }
-        }
-      }
+      //       // MavenTool -> name of maven installations under configure tools in jenkins
+      //       rtMaven.tool = 'MavenTool'
+      //       rtMaven.deployer releaseRepo: 'workshop', snapshotRepo:'workshop', server: server
+      //       rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+      //       server.publishBuildInfo buildInfo
+      //     }
+      //   }
+      // }
       stage('Build docker image') {
         steps {
           sh "docker build -t sharmasahil95/devops-test ."
