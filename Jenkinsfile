@@ -12,29 +12,30 @@ pipeline {
       // checkout the latest code from the github
     	stage('Checkout'){
     		steps {
+          // GitHubID -> Id of credential which are setup in the jenkins itself
     			git credentialsId: 'GitHubID', url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
     		}
     	}
     	// analyse the code in sonarqube
-    	stage('Sonar Analysis'){
-    		steps {
-    		// SonarQube Server -> Name of SonarQube configured in Jenkins configuration
-          		withSonarQubeEnv('SonarQube Server') { 
-    			  sh "mvn clean package sonar:sonar \
-  				  -Dsonar.host.url=http://localhost:9000 \
-  				  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
-          		}
-    		}
-    	}
-    	// check if the quality gate passed or not
-    	stage("Quality Gate") {
-        steps {
-          // for this step to work, need to setup a web hook in sonarqube
-          timeout(time: 1, unit: 'HOURS') {
-            waitForQualityGate abortPipeline: true
-          }
-        }
-      }
+    	// stage('Sonar Analysis'){
+    	// 	steps {
+    	// 	// SonarQube Server -> Name of SonarQube configured in Jenkins configuration
+      //     		withSonarQubeEnv('SonarQube Server') { 
+    	// 		  sh "mvn clean package sonar:sonar \
+  		// 		  -Dsonar.host.url=http://localhost:9000 \
+  		// 		  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
+      //     		}
+    	// 	}
+    	// }
+    	// // check if the quality gate passed or not
+    	// stage("Quality Gate") {
+      //   steps {
+      //     // for this step to work, need to setup a web hook in sonarqube
+      //     timeout(time: 1, unit: 'HOURS') {
+      //       waitForQualityGate abortPipeline: true
+      //     }
+      //   }
+      // }
        // while pushing to artifactory it runs mvn clean install
        // so seaprate build step is not required
       stage('Build and Push to artifactory') {
