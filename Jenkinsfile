@@ -12,8 +12,7 @@ pipeline {
       // checkout the latest code from the github
     	stage('Checkout'){
     		steps {
-    			git poll:true, credentialsId: '34ed3503-6786-4e1f-97e6-d275a8699c06', 
-    			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
+    			git credentialsId: 'GitHubID', url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
     		}
     	}
     	// analyse the code in sonarqube
