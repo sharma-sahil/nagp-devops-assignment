@@ -57,6 +57,11 @@ pipeline {
       //     }
       //   }
       // }
+      stage('Build') {
+            steps {
+                sh "sudo mvn clean install"
+            }
+        }
       stage('Build docker image') {
         steps {
           sh "sudo docker build -t sharmasahil95/devops-test ."
