@@ -59,7 +59,7 @@ pipeline {
       // }
       stage('Build docker image') {
         steps {
-          sh "docker build -t sharmasahil95/devops-test ."
+          sh "sudo docker build -t sharmasahil95/devops-test ."
           }
         }
     }
