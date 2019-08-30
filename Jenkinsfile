@@ -58,9 +58,17 @@ pipeline {
         }
       }
       // step to build docker image
-      stage('Build docker image') {
+      stage('Build & Push docker image') {
         steps {
-          bat "docker build -t sharmasahil95/devops-test ."
+          script{
+            // bat "docker build -t sharmasahil95/devops-test ."
+            withCredentials([usernamePassword( credentialsId: 'dockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+              bat "docker login -u ${USERNAME} -p ${PASSWORD}"
+              def app = docker.build("sharmasahil95/devops-test:${env.BUILD_ID}")
+              app.push(pom.version)
+              app.push("latest")
+              }
+            }
           }
         }
         // run the image in docker container
