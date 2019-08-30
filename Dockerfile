@@ -2,12 +2,12 @@
 FROM tomcat:alpine
 
 # Maintainer
-MAINTAINER "sahil <sahil.sharma@nagarro.com">
+MAINTAINER "sahil"
 
 WORKDIR $JENKINS_HOME/workspace/devops/
 
 # Copy to images tomcat path
-ADD SpringMvcMaven.war /usr/local/tomcat/webapps/
+COPY SpringMvcMaven.war /usr/local/tomcat/webapps/
 
 EXPOSE 8080
 CMD /usr/local/tomcat/bin/catalina.sh run
