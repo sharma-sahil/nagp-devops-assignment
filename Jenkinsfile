@@ -65,7 +65,7 @@ pipeline {
             withCredentials([usernamePassword( credentialsId: 'dockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
               bat "docker login -u ${USERNAME} -p ${PASSWORD}"
               def app = docker.build("sharmasahil95/devops-test:${env.BUILD_ID}")
-              app.push(pom.version)
+              app.push()
               app.push("latest")
               }
             }
