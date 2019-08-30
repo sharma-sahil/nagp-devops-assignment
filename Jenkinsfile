@@ -61,12 +61,10 @@ pipeline {
       stage('Build & Push docker image') {
         steps {
           script{
-            // bat "docker build -t sharmasahil95/devops-test ."
             withCredentials([usernamePassword( credentialsId: 'dockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+              bat "docker build -t sharmasahil95/devops-test:${env.BUILD_ID} ."
               bat "docker login -u ${USERNAME} -p ${PASSWORD}"
-              def app = docker.build("sharmasahil95/devops-test:${env.BUILD_ID}")
-              app.push()
-              app.push("latest")
+              bat "docker push sharmasahil95/devops-test:${env.BUILD_ID}"
               }
             }
           }
@@ -74,7 +72,7 @@ pipeline {
         // run the image in docker container
   	  stage('Deploy') {
         steps {
-          bat "docker run -it --rm -p 8080:8080 --name SpringMvcMaven sharmasahil95/devops-test ."
+          bat "docker run -it --rm -p 8080:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID} ."
           }
         }
     }
