@@ -77,10 +77,13 @@ pipeline {
   	  stage('Deploy') {
         steps {
           script{
+            // check if previous container is running or not
+            if("docker inspect -f '{{.State.Running}}' SpringMvcMaven"){
               // stop already running container
               bat "docker stop SpringMvcMaven"
               // remove the old container
               bat "docker container rm SpringMvcMaven"
+              }
               // start a new container
               bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
             }
