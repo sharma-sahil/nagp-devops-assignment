@@ -38,7 +38,7 @@ pipeline {
       }
        // while pushing to artifactory it runs mvn clean install
        // so seaprate build step is not required
-      stage('Build and Push to artifactory') {
+      stage('Build and publish artifactory') {
         steps {
           script{
            	// artifactoryServer -> Artifactory Server ID configured in jenkins configuration
@@ -57,13 +57,17 @@ pipeline {
           }
         }
       }
-      // step to build docker image
+      // step to build and push docker image
       stage('Build & Push docker image') {
         steps {
           script{
+            // dockerHubCredentials -> id of docker credentials configured in the Jenkins Credentials
             withCredentials([usernamePassword( credentialsId: 'dockerHubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+              // build the docker image
               bat "docker build -t sharmasahil95/devops-test:${env.BUILD_ID} ."
+              // login to docker hub
               bat "docker login -u ${USERNAME} -p ${PASSWORD}"
+              // push latest image to docker hub
               bat "docker push sharmasahil95/devops-test:${env.BUILD_ID}"
               }
             }
@@ -72,7 +76,14 @@ pipeline {
         // run the image in docker container
   	  stage('Deploy') {
         steps {
-          bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
+          script{
+              // stop already running container
+              bat "docker stop SpringMvcMaven"
+              // remove the old container
+              bat "docker container rm SpringMvcMaven"
+              // start a new container
+              bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
+            }
           }
         }
     }
