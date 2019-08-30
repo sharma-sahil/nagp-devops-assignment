@@ -72,7 +72,7 @@ pipeline {
         // run the image in docker container
   	  stage('Deploy') {
         steps {
-          bat "docker run -it --rm -p 8080:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID} ."
+          bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
           }
         }
     }
