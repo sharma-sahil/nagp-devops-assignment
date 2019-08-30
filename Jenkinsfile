@@ -82,6 +82,10 @@ pipeline {
                 bat "docker stop SpringMvcMaven"
                 // remove the old container
                 bat "docker container rm SpringMvcMaven"
+              } catch(Exception err){
+                // do nothing
+                // added exception handling to prevent pipeline from failing 
+                // when the pipeline is run first time, the container will not be up and the above steps will throw exception
               } finally {
                 // start a new container
                 bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
