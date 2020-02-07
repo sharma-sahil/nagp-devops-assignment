@@ -12,7 +12,7 @@ pipeline {
       // checkout the latest code from the github
     	stage('Checkout'){
     		steps {
-    			git poll:true, credentialsId: '34ed3503-6786-4e1f-97e6-d275a8699c06', 
+    			git poll:true, credentialsId: '455eddbe-5cd9-46c1-8908-9bf8491bbd5d', 
     			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
     		}
     	}
