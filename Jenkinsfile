@@ -23,7 +23,8 @@ pipeline {
           		withSonarQubeEnv('SonarQube Server') { 
     			  bat "mvn clean package sonar:sonar \
   				  -Dsonar.host.url=http://localhost:9000 \
-  				  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f"
+  				  -Dsonar.login=ef20c6a45405c47d7f27d996de0d83d8e852f44f \
+            -Dsonar.junit.reportPaths=target/surefire-reports"
           		}
     		}
     	}
