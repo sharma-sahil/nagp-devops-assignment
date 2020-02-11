@@ -97,7 +97,7 @@ pipeline {
                 // when the pipeline is run first time, the container will not be up and the above steps will throw exception
               } finally {
                 // start a new container
-                 def checkoutBranch = ${params.Environment};
+                 def checkoutBranch = params.Environment;
                 if(checkoutBranch == 'dev'){
                   bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
                 }

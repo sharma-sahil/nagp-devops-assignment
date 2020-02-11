@@ -14,12 +14,12 @@ public class HelloServiceImpl implements IHelloService {
 
 	@Override
 	public String getUserName() {
-		return "Sahil Sharma";
+		return "Sahil Sharma - Dev branch";
 	}
 
 	@Override
 	public String getWelcomeText() {
-		return "Welcome to the sample application created for devops assignment";
+		return "Welcome to the sample application created for devops assignment, This is Dev branch";
 	}
 
 }
