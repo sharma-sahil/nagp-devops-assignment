@@ -16,10 +16,12 @@ pipeline {
       // checkout the latest code from the github
     	stage('Checkout'){
     		steps {
-          def checkoutBranch = ${params.Environment};
-    			git poll:true, credentialsId: '455eddbe-5cd9-46c1-8908-9bf8491bbd5d', 
-    			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git',
-          branch: checkoutBranch
+          script{
+            def checkoutBranch = ${params.Environment};
+            git poll:true, credentialsId: '455eddbe-5cd9-46c1-8908-9bf8491bbd5d', 
+            url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git',
+            branch: checkoutBranch
+          }
     		}
     	}
     	// analyse the code in sonarqube
