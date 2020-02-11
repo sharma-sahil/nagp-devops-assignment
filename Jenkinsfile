@@ -17,7 +17,7 @@ pipeline {
     	stage('Checkout'){
     		steps {
           script{
-            def checkoutBranch = ${params.Environment};
+            def checkoutBranch = params.Environment;
             git poll:true, credentialsId: '455eddbe-5cd9-46c1-8908-9bf8491bbd5d', 
             url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git',
             branch: checkoutBranch
