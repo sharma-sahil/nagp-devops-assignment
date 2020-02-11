@@ -4,6 +4,10 @@
 
 pipeline {
     agent any
+    parameters {
+        choice(name: 'Environment', choices: ['Dev', 'Prod'], description: 'Select Environment')
+    }
+
     // to setup the trigger for polling any change in github
     triggers {
       pollSCM('H/2 * * * *') 
