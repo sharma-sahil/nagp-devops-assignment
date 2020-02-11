@@ -19,13 +19,13 @@ public class HelloServiceTest {
 	@Test
 	public void testGetUserName() {
 		String answer = this.helloService.getUserName();
-		MatcherAssert.assertThat(answer, equalTo("Sahil Sharma"));
+		MatcherAssert.assertThat(answer, equalTo("Sahil Sharma - Dev branch"));
 	}
 
 	@Test
 	public void testGetWelcomeText() {
 		String answer = this.helloService.getWelcomeText();
-		MatcherAssert.assertThat(answer, equalTo("Welcome to the sample application created for devops assignment"));
+		MatcherAssert.assertThat(answer, equalTo("Welcome to the sample application created for devops assignment, This is Dev branch"));
 	}
 
 }
