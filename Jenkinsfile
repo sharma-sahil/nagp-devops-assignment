@@ -5,7 +5,7 @@
 pipeline {
     agent any
     parameters {
-        choice(name: 'Environment', choices: ['Dev', 'Prod'], description: 'Select Environment')
+        choice(name: 'Environment', choices: ['dev', 'prod'], description: 'Select Environment')
     }
 
     // to setup the trigger for polling any change in github
@@ -16,8 +16,10 @@ pipeline {
       // checkout the latest code from the github
     	stage('Checkout'){
     		steps {
+          def checkoutBranch = ${params.Environment};
     			git poll:true, credentialsId: '455eddbe-5cd9-46c1-8908-9bf8491bbd5d', 
-    			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git'
+    			url: 'https://github.com/sharma-sahil/nagp-devops-assignment.git',
+          branch: checkoutBranch
     		}
     	}
     	// analyse the code in sonarqube
@@ -93,7 +95,13 @@ pipeline {
                 // when the pipeline is run first time, the container will not be up and the above steps will throw exception
               } finally {
                 // start a new container
-                bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
+                 def checkoutBranch = ${params.Environment};
+                if(checkoutBranch == 'dev'){
+                  bat "docker run -d -p 8888:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
+                }
+                if(checkoutBranch == 'prod'){
+                  bat "docker run -d -p 8889:8080 --name SpringMvcMaven sharmasahil95/devops-test:${env.BUILD_ID}"
+                }
               }
             }
           }
